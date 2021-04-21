@@ -92,35 +92,26 @@ if choose_option == '2':
         print("[+] --------------QUITTING----------------")
 
 if choose_option == '3':
+import argparse
+import scapy.all as scapy
 
-    def get_arguments():
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-t", "--target", dest="ip", help="Target IP address")
-        options = parser.parse_args()
-        if not options.ip:
-            parser.error("[-] Please specify a target IP, use --help for more info")
-        return options
+ip = input("Enter IP\n")
+def scan(ip):
+    
+    arp = scapy.ARP(pdst=ip)
+    broad = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+    arp_broad = broad/arp
+    answer = scapy.srp(arp_broad, timeout=1, verbose=False)[0]
+    client_list = []
+    for i in answer:
+        client_dict = {"IP":i[1].psrc, "MAC": i[1].hwdst}
+        client_list.append(client_dict)
+    return client_list
 
-    def scan(ip, mac):
-        arp_request = scapy.ARP(pdst=ip)
-        broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-        arp_request_broadcast = broadcast / arp_request
-        answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+def scan_result(result_list):
+    print("IP\t\t\tMAC Address\n--------------------------------------")
+    for j in result_list:
+        print(j["IP"]+ "\t\t" + j["MAC"])
 
-        clients_list = []
-
-        for element in answered_list:
-            client_list = {"ip":element[1].psrc, "mac":element[1].hwsrc}
-            clients_list.append(client_list)
-        return clients_list
-
-
-    def print_result(result_list):
-        print("IP\t\t\tMAC Address\n-----------------------------------------")
-        for client in result_list:
-            print(client["ip"] + "\t\t" + client["mac"])
-
-
-    options = get_arguments()
-    scan_result = scan(options.ip, "ff:ff:ff:ff:ff:ff:")
-    print_result(scan_result)
+result = scan(ip)
+scan_result(result)
