@@ -92,8 +92,6 @@ if choose_option == '2':
         print("[+] --------------QUITTING----------------")
 
 if choose_option == '3':
-import argparse
-import scapy.all as scapy
 
 ip = input("Enter IP\n")
 def scan(ip):
