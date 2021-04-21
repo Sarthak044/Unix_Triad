@@ -1,3 +1,4 @@
 # Unix_Triad
 
-Make sure to run install.sh 
+chmod +x install.sh
+Make sure to run install.sh
