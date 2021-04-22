@@ -92,7 +92,7 @@ if choose_option == '2':
         print("[+] --------------QUITTING----------------")
 
 if choose_option == '3':
-    ip = input("Enter the IP For example: 192.168.2.0/24")
+    ip = input("Enter the IP For example: 192.168.2.0/24\n")
     def scan(ip, mac):
         arp_request = scapy.ARP(pdst=ip)
         broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
